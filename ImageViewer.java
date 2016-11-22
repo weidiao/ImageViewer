@@ -111,8 +111,8 @@ public class ImageViewer extends JFrame {
 				public void keyReleased(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 						Path file = res.get(fileIndex);
-						if (JOptionPane.showConfirmDialog(ImageViewer.this, "确定删除\"" + file.getFileName() + "\"吗?", "删除",
-								JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						if (JOptionPane.showConfirmDialog(ImageViewer.this, "确定删除\"" + file.getFileName() + "\"吗?",
+								"删除", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 							try {
 								Files.delete(file);
 							} catch (IOException e1) {
@@ -281,12 +281,9 @@ public class ImageViewer extends JFrame {
 	}
 
 	void moveImg(int delta) {
-		int state = getNowState();
-		if (state == 3)
-			state = img.getWidth() > img.getHeight() ? 2 : 1;
-		if (state == 1) {
+		if (img.getWidth() < img.getHeight()) {
 			moveImgVertically(delta);
-		} else if (state == 2.0) {
+		} else {
 			moveImgHorizontally(delta);
 		}
 	}
@@ -316,13 +313,5 @@ public class ImageViewer extends JFrame {
 		rec.height = img.getHeight();
 		rec.x = rec.width / 2.0;
 		rec.y = rec.height / 2.0;
-	}
-
-	/**
-	 * @four states @00:too small @01:too long @10:too wide @11:too big
-	 */
-	int getNowState() {
-		int x = rec.width < imagePanel.getWidth() ? 0 : 1, y = rec.height < imagePanel.getHeight() ? 0 : 1;
-		return x << 1 | y;
 	}
 }
